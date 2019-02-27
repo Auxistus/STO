@@ -1,0 +1,11 @@
+﻿CREATE FUNCTION [Stock].[GetNextSaleID]
+(
+)
+RETURNS int
+AS
+BEGIN
+	RETURN (
+		SELECT ISNULL(MAX(ID), 0) + 1
+		FROM Stock.Sale
+	)
+END

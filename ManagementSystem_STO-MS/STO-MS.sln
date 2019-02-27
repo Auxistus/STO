@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{F2ABA97C-20AE-4536-9133-E512DE95FFF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagementSystem", "ManagementSystem\ManagementSystem.csproj", "{00255A55-8361-4F47-9C4F-8D274B7AF5E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{98A08053-F79E-4879-BFD3-79F65BEA32B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{A387AC3F-7DAF-49B8-8DA9-B01F15F64EE6}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ManagementSystemSetup", "ManagementSystemSetup\ManagementSystemSetup.vdproj", "{BFA639EE-AD2B-494F-93DB-182D5267C400}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2ABA97C-20AE-4536-9133-E512DE95FFF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2ABA97C-20AE-4536-9133-E512DE95FFF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2ABA97C-20AE-4536-9133-E512DE95FFF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2ABA97C-20AE-4536-9133-E512DE95FFF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00255A55-8361-4F47-9C4F-8D274B7AF5E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00255A55-8361-4F47-9C4F-8D274B7AF5E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00255A55-8361-4F47-9C4F-8D274B7AF5E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00255A55-8361-4F47-9C4F-8D274B7AF5E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98A08053-F79E-4879-BFD3-79F65BEA32B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98A08053-F79E-4879-BFD3-79F65BEA32B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98A08053-F79E-4879-BFD3-79F65BEA32B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98A08053-F79E-4879-BFD3-79F65BEA32B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A387AC3F-7DAF-49B8-8DA9-B01F15F64EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A387AC3F-7DAF-49B8-8DA9-B01F15F64EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A387AC3F-7DAF-49B8-8DA9-B01F15F64EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A387AC3F-7DAF-49B8-8DA9-B01F15F64EE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFA639EE-AD2B-494F-93DB-182D5267C400}.Debug|Any CPU.ActiveCfg = Debug
+		{BFA639EE-AD2B-494F-93DB-182D5267C400}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://sto-ms.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = BusinessLogic\\BusinessLogic.csproj
+		SccProjectName1 = BusinessLogic
+		SccLocalPath1 = BusinessLogic
+		SccProjectUniqueName2 = Common\\Common.csproj
+		SccProjectName2 = Common
+		SccLocalPath2 = Common
+		SccProjectUniqueName3 = Database\\Database.csproj
+		SccProjectName3 = Database
+		SccLocalPath3 = Database
+		SccProjectUniqueName4 = ManagementSystem\\ManagementSystem.csproj
+		SccProjectName4 = ManagementSystem
+		SccLocalPath4 = ManagementSystem
+		SccProjectUniqueName5 = ManagementSystemSetup\\ManagementSystemSetup.vdproj
+		SccProjectName5 = ManagementSystemSetup
+		SccLocalPath5 = ManagementSystemSetup
+	EndGlobalSection
+EndGlobal

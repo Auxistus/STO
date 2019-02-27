@@ -1,0 +1,1286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Component">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComponentTypeID" Type="tinyint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="2" Nullable="false" />
+          <Property Name="Modified" Type="datetime2" Precision="2" />
+        </EntityType>
+        <EntityType Name="ComponentType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsVisible" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="2" Nullable="false" />
+          <Property Name="Modified" Type="datetime2" Precision="2" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Scale" Type="smallint" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="2" Nullable="false" />
+          <Property Name="Modified" Type="datetime2" Precision="2" />
+        </EntityType>
+        <EntityType Name="Product_Component">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="ComponentID" />
+          </Key>
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="ComponentID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="smallint" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Entered" Type="date" Nullable="false" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="2" Nullable="false" />
+          <Property Name="Modified" Type="datetime2" Precision="2" />
+        </EntityType>
+        <EntityType Name="InventoryItem">
+          <Key>
+            <PropertyRef Name="InventoryID" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="InventoryID" Type="int" Nullable="false" />
+          <Property Name="Order" Type="smallint" Nullable="false" />
+          <Property Name="ComponentID" Type="int" Nullable="false" />
+          <Property Name="StockQuantity" Type="int" Nullable="false" />
+          <Property Name="ActualQuantity" Type="int" Nullable="false" />
+          <Property Name="TotalDifference" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="2" Nullable="false" />
+          <Property Name="Modified" Type="datetime2" Precision="2" />
+        </EntityType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Sold" Type="date" Nullable="false" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="2" Nullable="false" />
+          <Property Name="Modified" Type="datetime2" Precision="2" />
+        </EntityType>
+        <EntityType Name="SaleItem">
+          <Key>
+            <PropertyRef Name="SaleID" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="SaleID" Type="int" Nullable="false" />
+          <Property Name="Order" Type="smallint" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="2" Nullable="false" />
+          <Property Name="Modified" Type="datetime2" Precision="2" />
+        </EntityType>
+        <EntityType Name="Supply">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Delivered" Type="date" Nullable="false" />
+          <Property Name="SupplierName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="2" Nullable="false" />
+          <Property Name="Modified" Type="datetime2" Precision="2" />
+        </EntityType>
+        <EntityType Name="SupplyItem">
+          <Key>
+            <PropertyRef Name="SupplyID" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="SupplyID" Type="int" Nullable="false" />
+          <Property Name="Order" Type="smallint" Nullable="false" />
+          <Property Name="ComponentID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="2" Nullable="false" />
+          <Property Name="Modified" Type="datetime2" Precision="2" />
+        </EntityType>
+        <Association Name="FK_Component_ComponentType">
+          <End Role="ComponentType" Type="Self.ComponentType" Multiplicity="1" />
+          <End Role="Component" Type="Self.Component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComponentType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Component">
+              <PropertyRef Name="ComponentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InventoryItem_Component">
+          <End Role="Component" Type="Self.Component" Multiplicity="1" />
+          <End Role="InventoryItem" Type="Self.InventoryItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="InventoryItem">
+              <PropertyRef Name="ComponentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InventoryItem_Inventory">
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="1" />
+          <End Role="InventoryItem" Type="Self.InventoryItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="InventoryItem">
+              <PropertyRef Name="InventoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Component_Component">
+          <End Role="Component" Type="Self.Component" Multiplicity="1" />
+          <End Role="Product_Component" Type="Self.Product_Component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Product_Component">
+              <PropertyRef Name="ComponentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Component_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Product_Component" Type="Self.Product_Component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Product_Component">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleItem_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="SaleItem" Type="Self.SaleItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SaleItem">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleItem_Sale">
+          <End Role="Sale" Type="Self.Sale" Multiplicity="1" />
+          <End Role="SaleItem" Type="Self.SaleItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sale">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SaleItem">
+              <PropertyRef Name="SaleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupplyItem_Component">
+          <End Role="Component" Type="Self.Component" Multiplicity="1" />
+          <End Role="SupplyItem" Type="Self.SupplyItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SupplyItem">
+              <PropertyRef Name="ComponentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupplyItem_Supply">
+          <End Role="Supply" Type="Self.Supply" Multiplicity="1" />
+          <End Role="SupplyItem" Type="Self.SupplyItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supply">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SupplyItem">
+              <PropertyRef Name="SupplyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DeleteComponentType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Catalog">
+          <Parameter Name="ID" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="DeleteProduct_Component" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Catalog">
+          <Parameter Name="ProductID" Type="int" Mode="In" />
+          <Parameter Name="ComponentID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertComponent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Catalog">
+          <Parameter Name="ComponentTypeID" Type="tinyint" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Quantity" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertComponentType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Catalog">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsVisible" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="InsertProduct" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Catalog">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Scale" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="InsertProduct_Component" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Catalog">
+          <Parameter Name="ProductID" Type="int" Mode="In" />
+          <Parameter Name="ComponentID" Type="int" Mode="In" />
+          <Parameter Name="Quantity" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="UpdateComponent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Catalog">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="ComponentTypeID" Type="tinyint" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Quantity" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateComponentType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Catalog">
+          <Parameter Name="ID" Type="tinyint" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsVisible" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="UpdateProduct" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Catalog">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Scale" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="CalculateComponentStockByInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="InventoryID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CalculateComponentStockBySale" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="SaleID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CalculateComponentStockBySupply" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="SupplyID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteInventoryItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="InventoryID" Type="int" Mode="In" />
+          <Parameter Name="Order" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="DeleteSaleItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="SaleID" Type="int" Mode="In" />
+          <Parameter Name="Order" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="DeleteSupplyItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="SupplyID" Type="int" Mode="In" />
+          <Parameter Name="Order" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="GetNextInventoryID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock" ReturnType="int" />
+        <Function Name="GetNextInventoryIDForApp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock" />
+        <Function Name="GetNextSaleID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock" ReturnType="int" />
+        <Function Name="GetNextSaleIDForApp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock" />
+        <Function Name="GetNextSupplyID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock" ReturnType="int" />
+        <Function Name="GetNextSupplyIDForApp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock" />
+        <Function Name="InsertInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="Entered" Type="date" Mode="In" />
+          <Parameter Name="IsApproved" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="InsertInventoryItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="InventoryID" Type="int" Mode="In" />
+          <Parameter Name="ComponentID" Type="int" Mode="In" />
+          <Parameter Name="StockQuantity" Type="int" Mode="In" />
+          <Parameter Name="ActualkQuantity" Type="int" Mode="In" />
+          <Parameter Name="TotalDifference" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertSale" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="Sold" Type="date" Mode="In" />
+          <Parameter Name="CustomerName" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsApproved" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="InsertSaleItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="SaleID" Type="int" Mode="In" />
+          <Parameter Name="ProductID" Type="int" Mode="In" />
+          <Parameter Name="Quantity" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertSupply" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="Delivered" Type="date" Mode="In" />
+          <Parameter Name="SupplierName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="IsApproved" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="InsertSupplyItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="SupplyID" Type="int" Mode="In" />
+          <Parameter Name="ComponentID" Type="int" Mode="In" />
+          <Parameter Name="Quantity" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateInventory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="Entered" Type="date" Mode="In" />
+          <Parameter Name="IsApproved" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="UpdateInventoryItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="InventoryID" Type="int" Mode="In" />
+          <Parameter Name="Order" Type="smallint" Mode="In" />
+          <Parameter Name="ComponentID" Type="int" Mode="In" />
+          <Parameter Name="StockQuantity" Type="int" Mode="In" />
+          <Parameter Name="ActualkQuantity" Type="int" Mode="In" />
+          <Parameter Name="TotalDifference" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateSale" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="Sold" Type="date" Mode="In" />
+          <Parameter Name="CustomerName" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsApproved" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="UpdateSaleItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="SaleID" Type="int" Mode="In" />
+          <Parameter Name="Order" Type="smallint" Mode="In" />
+          <Parameter Name="ProductID" Type="int" Mode="In" />
+          <Parameter Name="Quantity" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateSupply" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="ID" Type="int" Mode="In" />
+          <Parameter Name="Delivered" Type="date" Mode="In" />
+          <Parameter Name="SupplierName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="IsApproved" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="UpdateSupplyItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Stock">
+          <Parameter Name="SupplyID" Type="int" Mode="In" />
+          <Parameter Name="Order" Type="smallint" Mode="In" />
+          <Parameter Name="ComponentID" Type="int" Mode="In" />
+          <Parameter Name="Quantity" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Component" EntityType="Self.Component" Schema="Catalog" store:Type="Tables" />
+          <EntitySet Name="ComponentType" EntityType="Self.ComponentType" Schema="Catalog" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="Catalog" store:Type="Tables" />
+          <EntitySet Name="Product_Component" EntityType="Self.Product_Component" Schema="Catalog" store:Type="Tables" />
+          <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="Stock" store:Type="Tables" />
+          <EntitySet Name="InventoryItem" EntityType="Self.InventoryItem" Schema="Stock" store:Type="Tables" />
+          <EntitySet Name="Sale" EntityType="Self.Sale" Schema="Stock" store:Type="Tables" />
+          <EntitySet Name="SaleItem" EntityType="Self.SaleItem" Schema="Stock" store:Type="Tables" />
+          <EntitySet Name="Supply" EntityType="Self.Supply" Schema="Stock" store:Type="Tables" />
+          <EntitySet Name="SupplyItem" EntityType="Self.SupplyItem" Schema="Stock" store:Type="Tables" />
+          <AssociationSet Name="FK_Component_ComponentType" Association="Self.FK_Component_ComponentType">
+            <End Role="ComponentType" EntitySet="ComponentType" />
+            <End Role="Component" EntitySet="Component" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InventoryItem_Component" Association="Self.FK_InventoryItem_Component">
+            <End Role="Component" EntitySet="Component" />
+            <End Role="InventoryItem" EntitySet="InventoryItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InventoryItem_Inventory" Association="Self.FK_InventoryItem_Inventory">
+            <End Role="Inventory" EntitySet="Inventory" />
+            <End Role="InventoryItem" EntitySet="InventoryItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Component_Component" Association="Self.FK_Product_Component_Component">
+            <End Role="Component" EntitySet="Component" />
+            <End Role="Product_Component" EntitySet="Product_Component" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Component_Product" Association="Self.FK_Product_Component_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Product_Component" EntitySet="Product_Component" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleItem_Product" Association="Self.FK_SaleItem_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="SaleItem" EntitySet="SaleItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleItem_Sale" Association="Self.FK_SaleItem_Sale">
+            <End Role="Sale" EntitySet="Sale" />
+            <End Role="SaleItem" EntitySet="SaleItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupplyItem_Component" Association="Self.FK_SupplyItem_Component">
+            <End Role="Component" EntitySet="Component" />
+            <End Role="SupplyItem" EntitySet="SupplyItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupplyItem_Supply" Association="Self.FK_SupplyItem_Supply">
+            <End Role="Supply" EntitySet="Supply" />
+            <End Role="SupplyItem" EntitySet="SupplyItem" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Component">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComponentTypeID" Type="Byte" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="2" />
+          <Property Name="Modified" Type="DateTime" Precision="2" />
+          <NavigationProperty Name="ComponentType" Relationship="Self.FK_Component_ComponentType" FromRole="Component" ToRole="ComponentType" />
+          <NavigationProperty Name="Product_Component" Relationship="Self.FK_Product_Component_Component" FromRole="Component" ToRole="Product_Component" />
+          <NavigationProperty Name="SupplyItems" Relationship="Model.FK_SupplyItem_Component" FromRole="Component" ToRole="SupplyItem" />
+          <NavigationProperty Name="InventoryItems" Relationship="Model.FK_InventoryItem_Component" FromRole="Component" ToRole="InventoryItem" />
+        </EntityType>
+        <EntityType Name="ComponentType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsVisible" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Components" Relationship="Self.FK_Component_ComponentType" FromRole="ComponentType" ToRole="Component" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="2" />
+          <Property Name="Modified" Type="DateTime" Precision="2" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Scale" Type="Int16" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="2" />
+          <Property Name="Modified" Type="DateTime" Precision="2" />
+          <NavigationProperty Name="Product_Component" Relationship="Self.FK_Product_Component_Product" FromRole="Product" ToRole="Product_Component" />
+          <NavigationProperty Name="SaleItems" Relationship="Model.FK_SaleItem_Product" FromRole="Product" ToRole="SaleItem" />
+        </EntityType>
+        <EntityType Name="Product_Component">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="ComponentID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ComponentID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int16" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="2" />
+          <NavigationProperty Name="Component" Relationship="Self.FK_Product_Component_Component" FromRole="Product_Component" ToRole="Component" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Product_Component_Product" FromRole="Product_Component" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Component_ComponentType">
+          <End Role="ComponentType" Type="Self.ComponentType" Multiplicity="1" />
+          <End Role="Component" Type="Self.Component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComponentType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Component">
+              <PropertyRef Name="ComponentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Component_Component">
+          <End Role="Component" Type="Self.Component" Multiplicity="1" />
+          <End Role="Product_Component" Type="Self.Product_Component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Product_Component">
+              <PropertyRef Name="ComponentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Component_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Product_Component" Type="Self.Product_Component" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Product_Component">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Components" EntityType="Self.Component" />
+          <EntitySet Name="ComponentTypes" EntityType="Self.ComponentType" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="Product_Component" EntityType="Self.Product_Component" />
+          <AssociationSet Name="FK_Component_ComponentType" Association="Self.FK_Component_ComponentType">
+            <End Role="ComponentType" EntitySet="ComponentTypes" />
+            <End Role="Component" EntitySet="Components" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Component_Component" Association="Self.FK_Product_Component_Component">
+            <End Role="Component" EntitySet="Components" />
+            <End Role="Product_Component" EntitySet="Product_Component" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Component_Product" Association="Self.FK_Product_Component_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Product_Component" EntitySet="Product_Component" />
+          </AssociationSet>
+          <FunctionImport Name="DeleteProduct_Component">
+            <Parameter Name="ProductID" Mode="In" Type="Int32" />
+            <Parameter Name="ComponentID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertComponent" ReturnType="Collection(Model.InsertComponent_Result)">
+            <Parameter Name="ComponentTypeID" Mode="In" Type="Byte" />
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertProduct" ReturnType="Collection(DateTime)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Scale" Mode="In" Type="Int16" />
+          </FunctionImport>
+          <FunctionImport Name="InsertProduct_Component" ReturnType="Collection(DateTime)">
+            <Parameter Name="ProductID" Mode="In" Type="Int32" />
+            <Parameter Name="ComponentID" Mode="In" Type="Int32" />
+            <Parameter Name="Quantity" Mode="In" Type="Int16" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateComponent" ReturnType="Collection(DateTime)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="ComponentTypeID" Mode="In" Type="Byte" />
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateProduct" ReturnType="Collection(DateTime)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Scale" Mode="In" Type="Int16" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteComponentType">
+          <Parameter Name="ID" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="InsertComponentType" ReturnType="Collection(Model.InsertComponentType_Result)">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="IsVisible" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateComponentType" ReturnType="Collection(DateTime)">
+            <Parameter Name="ID" Mode="In" Type="Byte" />
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="IsVisible" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <EntitySet Name="Supplies" EntityType="Model.Supply" />
+          <EntitySet Name="SupplyItems" EntityType="Model.SupplyItem" />
+          <AssociationSet Name="FK_SupplyItem_Component" Association="Model.FK_SupplyItem_Component">
+            <End Role="Component" EntitySet="Components" />
+            <End Role="SupplyItem" EntitySet="SupplyItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SupplyItem_Supply" Association="Model.FK_SupplyItem_Supply">
+            <End Role="Supply" EntitySet="Supplies" />
+            <End Role="SupplyItem" EntitySet="SupplyItems" />
+          </AssociationSet>
+          <FunctionImport Name="InsertSupply" ReturnType="Collection(Model.InsertSupply_Result)">
+            <Parameter Name="Delivered" Mode="In" Type="DateTime" />
+            <Parameter Name="SupplierName" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="IsApproved" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="InsertSupplyItem" ReturnType="Collection(DateTime)">
+            <Parameter Name="SupplyID" Mode="In" Type="Int32" />
+            <Parameter Name="ComponentID" Mode="In" Type="Int32" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateSupply" ReturnType="Collection(DateTime)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="Delivered" Mode="In" Type="DateTime" />
+            <Parameter Name="SupplierName" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="IsApproved" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateSupplyItem" ReturnType="Collection(DateTime)">
+            <Parameter Name="SupplyID" Mode="In" Type="Int32" />
+            <Parameter Name="Order" Mode="In" Type="Int16" />
+            <Parameter Name="ComponentID" Mode="In" Type="Int32" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetNextSupplyIDForApp" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="DeleteSupplyItem">
+            <Parameter Name="SupplyID" Mode="In" Type="Int32" />
+            <Parameter Name="Order" Mode="In" Type="Int16" />
+          </FunctionImport>
+          <EntitySet Name="Inventories" EntityType="Model.Inventory" />
+          <EntitySet Name="InventoryItems" EntityType="Model.InventoryItem" />
+          <AssociationSet Name="FK_InventoryItem_Component" Association="Model.FK_InventoryItem_Component">
+            <End Role="Component" EntitySet="Components" />
+            <End Role="InventoryItem" EntitySet="InventoryItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InventoryItem_Inventory" Association="Model.FK_InventoryItem_Inventory">
+            <End Role="Inventory" EntitySet="Inventories" />
+            <End Role="InventoryItem" EntitySet="InventoryItems" />
+          </AssociationSet>
+          <FunctionImport Name="DeleteInventoryItem">
+            <Parameter Name="InventoryID" Mode="In" Type="Int32" />
+            <Parameter Name="Order" Mode="In" Type="Int16" />
+          </FunctionImport>
+          <FunctionImport Name="GetNextInventoryIDForApp" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="InsertInventory" ReturnType="Collection(Model.InsertInventory_Result)">
+            <Parameter Name="Entered" Mode="In" Type="DateTime" />
+            <Parameter Name="IsApproved" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="InsertInventoryItem" ReturnType="Collection(Model.InsertInventoryItem_Result)">
+            <Parameter Name="InventoryID" Mode="In" Type="Int32" />
+            <Parameter Name="ComponentID" Mode="In" Type="Int32" />
+            <Parameter Name="StockQuantity" Mode="In" Type="Int32" />
+            <Parameter Name="ActualkQuantity" Mode="In" Type="Int32" />
+            <Parameter Name="TotalDifference" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateInventory" ReturnType="Collection(DateTime)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="Entered" Mode="In" Type="DateTime" />
+            <Parameter Name="IsApproved" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateInventoryItem" ReturnType="Collection(DateTime)">
+            <Parameter Name="InventoryID" Mode="In" Type="Int32" />
+            <Parameter Name="Order" Mode="In" Type="Int16" />
+            <Parameter Name="ComponentID" Mode="In" Type="Int32" />
+            <Parameter Name="StockQuantity" Mode="In" Type="Int32" />
+            <Parameter Name="ActualkQuantity" Mode="In" Type="Int32" />
+            <Parameter Name="TotalDifference" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CalculateComponentStockByInventory">
+          <Parameter Name="InventoryID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CalculateComponentStockBySupply">
+          <Parameter Name="SupplyID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Sales" EntityType="Model.Sale" />
+          <EntitySet Name="SaleItems" EntityType="Model.SaleItem" />
+          <AssociationSet Name="FK_SaleItem_Product" Association="Model.FK_SaleItem_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="SaleItem" EntitySet="SaleItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleItem_Sale" Association="Model.FK_SaleItem_Sale">
+            <End Role="Sale" EntitySet="Sales" />
+            <End Role="SaleItem" EntitySet="SaleItems" />
+          </AssociationSet>
+          <FunctionImport Name="CalculateComponentStockBySale">
+          <Parameter Name="SaleID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteSaleItem">
+            <Parameter Name="SaleID" Mode="In" Type="Int32" />
+            <Parameter Name="Order" Mode="In" Type="Int16" />
+          </FunctionImport>
+          <FunctionImport Name="GetNextSaleIDForApp" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="InsertSale" ReturnType="Collection(Model.InsertSale_Result)">
+            <Parameter Name="Sold" Mode="In" Type="DateTime" />
+            <Parameter Name="CustomerName" Mode="In" Type="String" />
+            <Parameter Name="IsApproved" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="InsertSaleItem" ReturnType="Collection(Model.InsertSaleItem_Result)">
+            <Parameter Name="SaleID" Mode="In" Type="Int32" />
+            <Parameter Name="ProductID" Mode="In" Type="Int32" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateSale" ReturnType="Collection(DateTime)">
+            <Parameter Name="ID" Mode="In" Type="Int32" />
+            <Parameter Name="Sold" Mode="In" Type="DateTime" />
+            <Parameter Name="CustomerName" Mode="In" Type="String" />
+            <Parameter Name="IsApproved" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateSaleItem" ReturnType="Collection(DateTime)">
+            <Parameter Name="SaleID" Mode="In" Type="Int32" />
+            <Parameter Name="Order" Mode="In" Type="Int16" />
+            <Parameter Name="ProductID" Mode="In" Type="Int32" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="InsertComponent_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="InsertComponentType_Result">
+          <Property Type="Byte" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Supply">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Delivered" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SupplierName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="2" />
+          <Property Name="Modified" Type="DateTime" Precision="2" />
+          <NavigationProperty Name="SupplyItems" Relationship="Model.FK_SupplyItem_Supply" FromRole="Supply" ToRole="SupplyItem" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SupplyItem">
+          <Key>
+            <PropertyRef Name="SupplyID" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="SupplyID" Type="Int32" Nullable="false" />
+          <Property Name="Order" Type="Int16" Nullable="false" />
+          <Property Name="ComponentID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="2" />
+          <Property Name="Modified" Type="DateTime" Precision="2" />
+          <NavigationProperty Name="Component" Relationship="Model.FK_SupplyItem_Component" FromRole="SupplyItem" ToRole="Component" />
+          <NavigationProperty Name="Supply" Relationship="Model.FK_SupplyItem_Supply" FromRole="SupplyItem" ToRole="Supply" />
+        </EntityType>
+        <Association Name="FK_SupplyItem_Component">
+          <End Type="Model.Component" Role="Component" Multiplicity="1" />
+          <End Type="Model.SupplyItem" Role="SupplyItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SupplyItem">
+              <PropertyRef Name="ComponentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SupplyItem_Supply">
+          <End Type="Model.Supply" Role="Supply" Multiplicity="1" />
+          <End Type="Model.SupplyItem" Role="SupplyItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supply">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SupplyItem">
+              <PropertyRef Name="SupplyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="InsertSupply_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Entered" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="2" />
+          <Property Name="Modified" Type="DateTime" Precision="2" />
+          <NavigationProperty Name="InventoryItems" Relationship="Model.FK_InventoryItem_Inventory" FromRole="Inventory" ToRole="InventoryItem" />
+        </EntityType>
+        <EntityType Name="InventoryItem">
+          <Key>
+            <PropertyRef Name="InventoryID" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="InventoryID" Type="Int32" Nullable="false" />
+          <Property Name="Order" Type="Int16" Nullable="false" />
+          <Property Name="ComponentID" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="2" />
+          <Property Name="Modified" Type="DateTime" Precision="2" />
+          <NavigationProperty Name="Component" Relationship="Model.FK_InventoryItem_Component" FromRole="InventoryItem" ToRole="Component" />
+          <NavigationProperty Name="Inventory" Relationship="Model.FK_InventoryItem_Inventory" FromRole="InventoryItem" ToRole="Inventory" />
+          <Property Name="StockQuantity" Type="Int32" Nullable="false" />
+          <Property Name="ActualQuantity" Type="Int32" Nullable="false" />
+          <Property Name="TotalDifference" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_InventoryItem_Component">
+          <End Type="Model.Component" Role="Component" Multiplicity="1" />
+          <End Type="Model.InventoryItem" Role="InventoryItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Component">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="InventoryItem">
+              <PropertyRef Name="ComponentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InventoryItem_Inventory">
+          <End Type="Model.Inventory" Role="Inventory" Multiplicity="1" />
+          <End Type="Model.InventoryItem" Role="InventoryItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="InventoryItem">
+              <PropertyRef Name="InventoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="InsertInventory_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="InsertInventoryItem_Result">
+          <Property Type="Int16" Name="Order" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Sold" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="2" />
+          <Property Name="Modified" Type="DateTime" Precision="2" />
+          <NavigationProperty Name="SaleItems" Relationship="Model.FK_SaleItem_Sale" FromRole="Sale" ToRole="SaleItem" />
+        </EntityType>
+        <EntityType Name="SaleItem">
+          <Key>
+            <PropertyRef Name="SaleID" />
+            <PropertyRef Name="Order" />
+          </Key>
+          <Property Name="SaleID" Type="Int32" Nullable="false" />
+          <Property Name="Order" Type="Int16" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="2" />
+          <Property Name="Modified" Type="DateTime" Precision="2" />
+          <NavigationProperty Name="Product" Relationship="Model.FK_SaleItem_Product" FromRole="SaleItem" ToRole="Product" />
+          <NavigationProperty Name="Sale" Relationship="Model.FK_SaleItem_Sale" FromRole="SaleItem" ToRole="Sale" />
+        </EntityType>
+        <Association Name="FK_SaleItem_Product">
+          <End Type="Model.Product" Role="Product" Multiplicity="1" />
+          <End Type="Model.SaleItem" Role="SaleItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SaleItem">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleItem_Sale">
+          <End Type="Model.Sale" Role="Sale" Multiplicity="1" />
+          <End Type="Model.SaleItem" Role="SaleItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sale">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SaleItem">
+              <PropertyRef Name="SaleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="InsertSale_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="InsertSaleItem_Result">
+          <Property Type="Int16" Name="Order" Nullable="false" />
+          <Property Type="DateTime" Name="Created" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Components">
+            <EntityTypeMapping TypeName="Model.Component">
+              <MappingFragment StoreEntitySet="Component">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ComponentTypeID" ColumnName="ComponentTypeID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Model.Component">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model.Store.InsertComponent">
+                  <ScalarProperty Name="Quantity" ParameterName="Quantity" />
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ScalarProperty Name="ComponentTypeID" ParameterName="ComponentTypeID" />
+                  <ResultBinding Name="ID" ColumnName="ID" />
+                  <ResultBinding Name="Created" ColumnName="Created" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model.Store.UpdateComponent">
+                  <ScalarProperty Name="Quantity" ParameterName="Quantity" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                  <ScalarProperty Name="ComponentTypeID" ParameterName="ComponentTypeID" Version="Current" />
+                  <ScalarProperty Name="ID" ParameterName="ID" Version="Current" />
+                  <ResultBinding Name="Modified" ColumnName="Modified" />
+                </UpdateFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComponentTypes">
+            <EntityTypeMapping TypeName="Model.ComponentType">
+              <MappingFragment StoreEntitySet="ComponentType">
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Model.ComponentType">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model.Store.InsertComponentType">
+                  <ScalarProperty Name="IsVisible" ParameterName="IsVisible" />
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ResultBinding Name="ID" ColumnName="ID" />
+                  <ResultBinding Name="Created" ColumnName="Created" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model.Store.UpdateComponentType">
+                  <ScalarProperty Name="IsVisible" ParameterName="IsVisible" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                  <ScalarProperty Name="ID" ParameterName="ID" Version="Current" />
+                  <ResultBinding Name="Modified" ColumnName="Modified" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="Model.Store.DeleteComponentType">
+                  <ScalarProperty Name="ID" ParameterName="ID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="Model.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Scale" ColumnName="Scale" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Model.Product">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model.Store.InsertProduct">
+                  <ScalarProperty Name="Scale" ParameterName="Scale" />
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ScalarProperty Name="ID" ParameterName="ID" />
+                  <ResultBinding Name="Created" ColumnName="Created" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model.Store.UpdateProduct">
+                  <ScalarProperty Name="Scale" ParameterName="Scale" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                  <ScalarProperty Name="ID" ParameterName="ID" Version="Current" />
+                  <ResultBinding Name="Modified" ColumnName="Modified" />
+                </UpdateFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product_Component">
+            <EntityTypeMapping TypeName="Model.Product_Component">
+              <MappingFragment StoreEntitySet="Product_Component">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ComponentID" ColumnName="ComponentID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Model.Product_Component">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model.Store.InsertProduct_Component">
+                  <ScalarProperty Name="Quantity" ParameterName="Quantity" />
+                  <ScalarProperty Name="ComponentID" ParameterName="ComponentID" />
+                  <ScalarProperty Name="ProductID" ParameterName="ProductID" />
+                  <ResultBinding Name="Created" ColumnName="Created" />
+                </InsertFunction>
+                <DeleteFunction FunctionName="Model.Store.DeleteProduct_Component">
+                  <ScalarProperty Name="ComponentID" ParameterName="ComponentID" />
+                  <ScalarProperty Name="ProductID" ParameterName="ProductID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DeleteProduct_Component" FunctionName="Model.Store.DeleteProduct_Component" />
+          <FunctionImportMapping FunctionImportName="InsertComponent" FunctionName="Model.Store.InsertComponent">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.InsertComponent_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InsertProduct" FunctionName="Model.Store.InsertProduct" />
+          <FunctionImportMapping FunctionImportName="InsertProduct_Component" FunctionName="Model.Store.InsertProduct_Component" />
+          <FunctionImportMapping FunctionImportName="UpdateComponent" FunctionName="Model.Store.UpdateComponent" />
+          <FunctionImportMapping FunctionImportName="UpdateProduct" FunctionName="Model.Store.UpdateProduct" />
+          <FunctionImportMapping FunctionImportName="DeleteComponentType" FunctionName="Model.Store.DeleteComponentType" />
+          <FunctionImportMapping FunctionImportName="InsertComponentType" FunctionName="Model.Store.InsertComponentType">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.InsertComponentType_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateComponentType" FunctionName="Model.Store.UpdateComponentType" />
+          <EntitySetMapping Name="Supplies">
+            <EntityTypeMapping TypeName="Model.Supply">
+              <MappingFragment StoreEntitySet="Supply">
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
+                <ScalarProperty Name="Delivered" ColumnName="Delivered" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Model.Supply">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model.Store.InsertSupply">
+                  <ScalarProperty Name="IsApproved" ParameterName="IsApproved" />
+                  <ScalarProperty Name="Description" ParameterName="Description" />
+                  <ScalarProperty Name="SupplierName" ParameterName="SupplierName" />
+                  <ScalarProperty Name="Delivered" ParameterName="Delivered" />
+                  <ResultBinding Name="ID" ColumnName="ID" />
+                  <ResultBinding Name="Created" ColumnName="Created" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model.Store.UpdateSupply">
+                  <ScalarProperty Name="IsApproved" ParameterName="IsApproved" Version="Current" />
+                  <ScalarProperty Name="Description" ParameterName="Description" Version="Current" />
+                  <ScalarProperty Name="SupplierName" ParameterName="SupplierName" Version="Current" />
+                  <ScalarProperty Name="Delivered" ParameterName="Delivered" Version="Current" />
+                  <ScalarProperty Name="ID" ParameterName="ID" Version="Current" />
+                  <ResultBinding Name="Modified" ColumnName="Modified" />
+                </UpdateFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SupplyItems">
+            <EntityTypeMapping TypeName="Model.SupplyItem">
+              <MappingFragment StoreEntitySet="SupplyItem">
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ComponentID" ColumnName="ComponentID" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="SupplyID" ColumnName="SupplyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Model.SupplyItem">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model.Store.InsertSupplyItem">
+                  <ScalarProperty Name="Quantity" ParameterName="Quantity" />
+                  <ScalarProperty Name="ComponentID" ParameterName="ComponentID" />
+                  <ScalarProperty Name="SupplyID" ParameterName="SupplyID" />
+                  <ResultBinding Name="Order" ColumnName="Order" />
+                  <ResultBinding Name="Created" ColumnName="Created" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model.Store.UpdateSupplyItem">
+                  <ScalarProperty Name="Quantity" ParameterName="Quantity" Version="Current" />
+                  <ScalarProperty Name="ComponentID" ParameterName="ComponentID" Version="Current" />
+                  <ScalarProperty Name="Order" ParameterName="Order" Version="Current" />
+                  <ScalarProperty Name="SupplyID" ParameterName="SupplyID" Version="Current" />
+                  <ResultBinding Name="Modified" ColumnName="Modified" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="Model.Store.DeleteSupplyItem">
+                  <ScalarProperty Name="Order" ParameterName="Order" />
+                  <ScalarProperty Name="SupplyID" ParameterName="SupplyID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="InsertSupply" FunctionName="Model.Store.InsertSupply">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.InsertSupply_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InsertSupplyItem" FunctionName="Model.Store.InsertSupplyItem" />
+          <FunctionImportMapping FunctionImportName="UpdateSupply" FunctionName="Model.Store.UpdateSupply" />
+          <FunctionImportMapping FunctionImportName="UpdateSupplyItem" FunctionName="Model.Store.UpdateSupplyItem" />
+          <FunctionImportMapping FunctionImportName="GetNextSupplyIDForApp" FunctionName="Model.Store.GetNextSupplyIDForApp" />
+          <FunctionImportMapping FunctionImportName="DeleteSupplyItem" FunctionName="Model.Store.DeleteSupplyItem" />
+          <EntitySetMapping Name="Inventories">
+            <EntityTypeMapping TypeName="Model.Inventory">
+              <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="Entered" ColumnName="Entered" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Model.Inventory">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model.Store.InsertInventory">
+                  <ScalarProperty Name="IsApproved" ParameterName="IsApproved" />
+                  <ScalarProperty Name="Entered" ParameterName="Entered" />
+                  <ResultBinding Name="ID" ColumnName="ID" />
+                  <ResultBinding Name="Created" ColumnName="Created" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model.Store.UpdateInventory">
+                  <ScalarProperty Name="IsApproved" ParameterName="IsApproved" Version="Current" />
+                  <ScalarProperty Name="Entered" ParameterName="Entered" Version="Current" />
+                  <ScalarProperty Name="ID" ParameterName="ID" Version="Current" />
+                  <ResultBinding Name="Modified" ColumnName="Modified" />
+                </UpdateFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InventoryItems">
+            <EntityTypeMapping TypeName="Model.InventoryItem">
+              <MappingFragment StoreEntitySet="InventoryItem">
+                <ScalarProperty Name="TotalDifference" ColumnName="TotalDifference" />
+                <ScalarProperty Name="ActualQuantity" ColumnName="ActualQuantity" />
+                <ScalarProperty Name="StockQuantity" ColumnName="StockQuantity" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="ComponentID" ColumnName="ComponentID" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="InventoryID" ColumnName="InventoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Model.InventoryItem">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model.Store.InsertInventoryItem">
+                  <ScalarProperty Name="TotalDifference" ParameterName="TotalDifference" />
+                  <ScalarProperty Name="ActualQuantity" ParameterName="ActualkQuantity" />
+                  <ScalarProperty Name="StockQuantity" ParameterName="StockQuantity" />
+                  <ScalarProperty Name="ComponentID" ParameterName="ComponentID" />
+                  <ScalarProperty Name="InventoryID" ParameterName="InventoryID" />
+                  <ResultBinding Name="Order" ColumnName="Order" />
+                  <ResultBinding Name="Created" ColumnName="Created" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model.Store.UpdateInventoryItem">
+                  <ScalarProperty Name="TotalDifference" ParameterName="TotalDifference" Version="Current" />
+                  <ScalarProperty Name="ActualQuantity" ParameterName="ActualkQuantity" Version="Current" />
+                  <ScalarProperty Name="StockQuantity" ParameterName="StockQuantity" Version="Current" />
+                  <ScalarProperty Name="ComponentID" ParameterName="ComponentID" Version="Current" />
+                  <ScalarProperty Name="Order" ParameterName="Order" Version="Current" />
+                  <ScalarProperty Name="InventoryID" ParameterName="InventoryID" Version="Current" />
+                  <ResultBinding Name="Modified" ColumnName="Modified" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="Model.Store.DeleteInventoryItem">
+                  <ScalarProperty Name="Order" ParameterName="Order" />
+                  <ScalarProperty Name="InventoryID" ParameterName="InventoryID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DeleteInventoryItem" FunctionName="Model.Store.DeleteInventoryItem" />
+          <FunctionImportMapping FunctionImportName="GetNextInventoryIDForApp" FunctionName="Model.Store.GetNextInventoryIDForApp" />
+          <FunctionImportMapping FunctionImportName="InsertInventory" FunctionName="Model.Store.InsertInventory">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.InsertInventory_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InsertInventoryItem" FunctionName="Model.Store.InsertInventoryItem">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.InsertInventoryItem_Result">
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateInventory" FunctionName="Model.Store.UpdateInventory" />
+          <FunctionImportMapping FunctionImportName="UpdateInventoryItem" FunctionName="Model.Store.UpdateInventoryItem" />
+          <FunctionImportMapping FunctionImportName="CalculateComponentStockByInventory" FunctionName="Model.Store.CalculateComponentStockByInventory" />
+          <FunctionImportMapping FunctionImportName="CalculateComponentStockBySupply" FunctionName="Model.Store.CalculateComponentStockBySupply" />
+          <EntitySetMapping Name="Sales">
+            <EntityTypeMapping TypeName="Model.Sale">
+              <MappingFragment StoreEntitySet="Sale">
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="Sold" ColumnName="Sold" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Model.Sale">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="Model.Store.InsertSale">
+                  <ScalarProperty Name="IsApproved" ParameterName="IsApproved" />
+                  <ScalarProperty Name="CustomerName" ParameterName="CustomerName" />
+                  <ScalarProperty Name="Sold" ParameterName="Sold" />
+                  <ResultBinding Name="ID" ColumnName="ID" />
+                  <ResultBinding Name="Created" ColumnName="Created" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="Model.Store.UpdateSale">
+                  <ScalarProperty Name="IsApproved" ParameterName="IsApproved" Version="Current" />
+                  <ScalarProperty Name="CustomerName" ParameterName="CustomerName" Version="Current" />
+                  <ScalarProperty Name="Sold" ParameterName="Sold" Version="Current" />
+                  <ScalarProperty Name="ID" ParameterName="ID" Version="Current" />
+                  <ResultBinding Name="Modified" ColumnName="Modified" />
+                </UpdateFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SaleItems">
+            <EntityTypeMapping TypeName="Model.SaleItem">
+              <MappingFragment StoreEntitySet="SaleItem">
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="SaleID" ColumnName="SaleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="Model.SaleItem">
+              <ModificationFunctionMapping>
+                <DeleteFunction FunctionName="Model.Store.DeleteSaleItem">
+                  <ScalarProperty Name="Order" ParameterName="Order" />
+                  <ScalarProperty Name="SaleID" ParameterName="SaleID" />
+                </DeleteFunction>
+                <UpdateFunction FunctionName="Model.Store.UpdateSaleItem">
+                  <ScalarProperty Name="Quantity" ParameterName="Quantity" Version="Current" />
+                  <ScalarProperty Name="ProductID" ParameterName="ProductID" Version="Current" />
+                  <ScalarProperty Name="Order" ParameterName="Order" Version="Current" />
+                  <ScalarProperty Name="SaleID" ParameterName="SaleID" Version="Current" />
+                  <ResultBinding Name="Modified" ColumnName="Modified" />
+                </UpdateFunction>
+                <InsertFunction FunctionName="Model.Store.InsertSaleItem">
+                  <ScalarProperty Name="Quantity" ParameterName="Quantity" />
+                  <ScalarProperty Name="ProductID" ParameterName="ProductID" />
+                  <ScalarProperty Name="SaleID" ParameterName="SaleID" />
+                  <ResultBinding Name="Order" ColumnName="Order" />
+                  <ResultBinding Name="Created" ColumnName="Created" />
+                </InsertFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CalculateComponentStockBySale" FunctionName="Model.Store.CalculateComponentStockBySale" />
+          <FunctionImportMapping FunctionImportName="DeleteSaleItem" FunctionName="Model.Store.DeleteSaleItem" />
+          <FunctionImportMapping FunctionImportName="GetNextSaleIDForApp" FunctionName="Model.Store.GetNextSaleIDForApp" />
+          <FunctionImportMapping FunctionImportName="InsertSale" FunctionName="Model.Store.InsertSale">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.InsertSale_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InsertSaleItem" FunctionName="Model.Store.InsertSaleItem">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.InsertSaleItem_Result">
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateSale" FunctionName="Model.Store.UpdateSale" />
+          <FunctionImportMapping FunctionImportName="UpdateSaleItem" FunctionName="Model.Store.UpdateSaleItem" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
